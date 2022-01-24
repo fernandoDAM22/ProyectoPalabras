@@ -14,6 +14,41 @@ public class Palabra {
 		this.posicionesOcupadas = posicionesOcupadas;
 	}
 	
+	public void letrasIniales(String palabra) {
+		int numeroLetras= palabra.length();
+		int letrasMostradas=numeroLetras/2;
+		for (int i = 0; i < letrasMostradas;i++) {
+			
+		}
+	}
+
+	
+	
+
+	public String getValor() {
+		return valor;
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
+
+	public char[] getLetrasDisponibles() {
+		return letrasDisponibles;
+	}
+
+	public void setLetrasDisponibles(char[] letrasDisponibles) {
+		this.letrasDisponibles = letrasDisponibles;
+	}
+
+	public boolean[] getPosicionesOcupadas() {
+		return posicionesOcupadas;
+	}
+
+	public void setPosicionesOcupadas(boolean[] posicionesOcupadas) {
+		this.posicionesOcupadas = posicionesOcupadas;
+	}
+	
 	
 	
 	
