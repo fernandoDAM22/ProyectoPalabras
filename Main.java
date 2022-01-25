@@ -51,6 +51,10 @@ public class Main {
 					System.out.println("Fin del programa, has ganado");
 					fin=true;
 				}
+				if(partida.getIntentos()==0) {
+					fin=true;
+					System.out.println("Fin del programa, has perdido porque no te quedan intentos");
+				}
 					
 				
 			}while(!fin);
