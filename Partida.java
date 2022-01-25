@@ -11,7 +11,8 @@ public class Partida {
 	private int intentos=3;
 	private Palabra palabras[];
 	private int numeroPalabra;
-	private int intentosLetras;
+	private int intentosLetras=2;
+	private boolean juegoTerminado;
 	public Partida() {
 		
 	}
@@ -26,16 +27,30 @@ public class Partida {
 		int operacion;
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader (isr);
+		mostrarIntentos();
 		System.out.println("Que operacion quieres realizar");
-		System.out.println("Introducir una letra");
-		System.out.println("Resolver Palabra");
+		System.out.println("1---Introducir una letra");
+		System.out.println("2---Resolver Palabra");
 		operacion = Integer.parseInt(br.readLine());
 		switch (operacion){
 		case 1:
+			pedirLetra();
 			break;
 		case 2:
+			resolver();
 			break;
 		}
+		MostrarPalabra();
+	}
+	public void mostrarIntentos() {
+		if(intentosLetras<0)
+			System.out.println("Te quedan 0 intentos para pedir letra");
+				else
+					System.out.println("Te quedan: " + intentosLetras + " para pedir letra");
+		if(intentos<0)
+			System.out.println("Te quedan 0 intentos para resolever");
+				else
+					System.out.println("Te quedan "+ intentos + " para resolver");
 	}
 	public void seleccionarPalabra() {
 		numeroPalabra = (int) Math.floor(Math.random() * 3);
@@ -53,16 +68,18 @@ public class Partida {
 			else
 				System.out.print("-");
 		}
+		System.out.println();
 	}
-	public void NumeroIntentos() {
+	public int numeroIntentos() {
 		boolean limite[] = palabras[numeroPalabra].getPosicionesOcupadas();
+		int contador=0;
 		String palabra = palabras[numeroPalabra].getValor();
-		intentosLetras = palabra.length() - 1;
 		for(int i = 0; i< limite.length;i++) {
-			if(limite[i] == true) {
-				intentosLetras--;
+			if(limite[i] == false) {
+				contador++;
 			}
 		}
+		return contador;
 		
 	}
 	public void pedirLetra() throws IOException {
@@ -74,29 +91,65 @@ public class Partida {
 		int posicion;
 		boolean posiciones[] = palabras[numeroPalabra].getPosicionesOcupadas();
 		System.out.println("Introduce una letra");
-		letra = br.readLine();
-		System.out.println("Introduce la posicion en la que introducir la letra");
-		posicion = Integer.parseInt(br.readLine());
-		if(intentos > 0){
-			if(posiciones[posicion] == false) {
-				letraComparar = letra.charAt(1);
-				if(letras[posicion] == letraComparar) {
-					System.out.println("has acertado la letra");
-					letras[posicion] = letraComparar;
+		if(intentosLetras <= 0) {
+			System.out.println("Sin intentos");
+			intentosLetras=0;
+		}
+		else {
+			if( numeroIntentos() > 1){
+				letra = br.readLine();
+				System.out.println("Introduce la posicion en la que introducir la letra");
+				posicion = Integer.parseInt(br.readLine());
+				if(posiciones[posicion] == false) {
+					letraComparar = letra.charAt(0);
+					if(letras[posicion] == letraComparar) {
+						System.out.println("has acertado la letra");
+						letras[posicion] = letraComparar;
+						posiciones[posicion] = true;
+					}
+					else {
+						System.out.println("La letra no coincide con la original");
+					}
 				}
 				else {
-					System.out.println("La letra no coincide con la original");
+					System.out.println("La posicion elegida ya esta ocupada");
 				}
 			}
 			else {
-				System.out.println("La posicion elegida ya esta ocupada");
+				System.out.println("Ya no puedes pedir mas letras");
 			}
 		}
+		intentosLetras--;
 		
-		intentos--;
+		
+		
 		palabras[numeroPalabra].setLetrasDisponibles(letras);
+		palabras[numeroPalabra].setPosicionesOcupadas(posiciones);
 	}
-	
-	
-	
+	public boolean resolver() throws IOException {
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader (isr);
+		String palabra = palabras[numeroPalabra].getValor();
+		System.out.println("Introduce la palabra");
+		String palabraIntroducida = br.readLine();
+		intentos--;
+		if(intentos==0) {
+			if(palabra.compareTo(palabraIntroducida) == 0) {
+				System.out.println("Correcto");
+				juegoTerminado=true;
+				return true;
+			}
+		}
+		else {
+			System.out.println("No te quedan intentos");
+		}
+		
+		return false;
+	}
+	public boolean fin() {
+		if(juegoTerminado == true) {
+			return true;
+		}
+		return false;
+	}
 }

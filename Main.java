@@ -12,7 +12,7 @@ public class Main {
 		BufferedReader br = new BufferedReader (isr);
 		boolean fin = false;
 		char letrasDisponibles[];
-		String valor1 = "Traza";
+		String valor1 = "traza";
 		String valor2 = "codigo";
 		String valor3 = "depurar";
 		Palabra palabras[] = new Palabra[3];
@@ -45,7 +45,15 @@ public class Main {
 		Partida partida = new Partida(fecha,nombreJugador,3,palabras);
 			partida.seleccionarPalabra();
 			partida.MostrarPalabra();
+			do {
+				partida.menu();
+				if(partida.fin()==true) {
+					System.out.println("Fin del programa, has ganado");
+					fin=true;
+				}
+					
 				
+			}while(!fin);
 	}
 	
 }
